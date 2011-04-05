@@ -25,34 +25,33 @@ header:
 .section .text
 mandelbrot:
     push %rbx
-    movl $63, %eax
+    mov $63, %rax
     pop %rbx
     ret
 
     .globl _start
 _start:
     /* write header */
-    movq $1, %rax
-    movq $1, %rdi
-    movq $header, %rsi
-    movq $headerlen, %rdx
+    mov $1, %rax /* sys_write */
+    mov $1, %rdi /* stdout */
+    mov $header, %rsi
+    mov $headerlen, %rdx
     syscall
 
-    /* subl $4, %esp */
     /* fill buffer */
-    movl $buf, %ebx
-    movl $buflen, %ecx
+    mov $buf, %rbx
+    mov $buflen, %rcx
 setpixel:
-    movw %cx, (%ebx)
-    inc %ebx
+    mov %rcx, (%rbx)
+    inc %rbx
     loop setpixel
 
     /* write buffer */
-    movl $buflen, %edx
-    movl $buf, %ecx
-    movl $1, %ebx /* stdout */
-    movl $4, %eax /* sys_write */
-    int $0x80
+    mov $1, %rax /* sys_write */
+    mov $1, %rdi /* stdout */
+    mov $buf, %rsi
+    mov $buflen, %rdx
+    syscall
 
     /* exit */
     movq $60, %rax /* sys_exit */
