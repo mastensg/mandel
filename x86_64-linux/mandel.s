@@ -19,13 +19,13 @@ header:
     .set headerlen, . - header
 
 .section .bss
-    .lcomm buf, 3 * width * height
-    .set buflen, 3 * width * height
+    .set pixels, width * height
+    .lcomm buf, 3 * pixels
+    .set buflen, 3 * pixels
 
 .section .text
 mandelbrot:
     push %rbx
-    mov $63, %rax
     pop %rbx
     ret
 
@@ -38,15 +38,29 @@ _start:
     mov $headerlen, %rdx
     syscall
 
-    /* fill buffer */
+    /* render image */
     mov $buf, %rbx
-    mov $buflen, %rcx
+    mov $pixels, %rcx
+
 setpixel:
-    mov %rcx, (%rbx)
+    mov %rcx, %rax
+
+    push %rcx
+    call mandelbrot
+    pop %rcx
+
+    movb %al, (%rbx)
     inc %rbx
+
+    movb %al, (%rbx)
+    inc %rbx
+
+    movb %al, (%rbx)
+    inc %rbx
+
     loop setpixel
 
-    /* write buffer */
+    /* write image */
     mov $1, %rax /* sys_write */
     mov $1, %rdi /* stdout */
     mov $buf, %rsi
