@@ -1,7 +1,7 @@
-mandel:
+mandel: mandel.hs
 	ghc -o mandel mandel.hs
 
 clean:
-	rm mandel
+	rm -f mandel
 
 all: mandel
