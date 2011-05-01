@@ -4,5 +4,5 @@ set -e
 
 make clean
 make
-./mandel > test
+time -p ./mandel > test
 meh test

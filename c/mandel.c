@@ -50,9 +50,9 @@ mandelbrot(const float a, const float b) {
     float complex c = a + b * I;
     float complex z = c;
 
-    for(uint8_t i = 0; i < 255; ++i) {
+    for(uint8_t i = 127; i < 128; --i) {
         if(cabs(z) > max)
-            return 255 - i;
+            return i;
 
         z = z * z + c;
     }
@@ -62,8 +62,8 @@ mandelbrot(const float a, const float b) {
 
 int
 main(int argc, char *argv[]) {
-    uint16_t w = 1920;
-    uint16_t h = 1200;
+    uint16_t w = 1024;
+    uint16_t h = 768;
     uint8_t p[3 * w * h];
 
     for(int y = 0; y < h; ++y) {
@@ -72,7 +72,7 @@ main(int argc, char *argv[]) {
         for(int x = 0; x < w; ++x) {
             float a = -2.5 + 3.5 * x / w;
 
-            uint8_t v = mandelbrot(a, b);
+            uint8_t v = 2 * mandelbrot(a, b);
 
             uint8_t r = v;
             uint8_t g = v;
