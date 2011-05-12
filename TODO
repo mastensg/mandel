@@ -2,6 +2,7 @@ DONE:
 C
 Assembler (x86)
 Lua*
+Python
 
 TODO:
 Ada
@@ -25,7 +26,6 @@ Pascal
 Perl
 Postscript
 Prolog
-Python
 Scheme
 Sed
 Shell
