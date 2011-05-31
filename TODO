@@ -4,6 +4,7 @@ Assembler (x86)
 Lua*
 Python
 Ruby*
+Shell
 
 TODO:
 Ada
@@ -29,7 +30,6 @@ Postscript
 Prolog
 Scheme
 Sed
-Shell
 Simula
 Smalltalk
 XML
