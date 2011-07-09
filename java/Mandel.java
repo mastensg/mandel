@@ -90,10 +90,14 @@ class Mandel {
         for(int y = 0; y < height; ++y) {
             for(int x = 0; x < width; ++x) {
                 double[] c = transform(x, y, width, height);
-                byte n = (byte)mandelbrot(c);
-                byte[] pixel = {n, n, n};
-                System.out.print(new String(pixel));
+                int m = mandelbrot(c);
+                byte n = (byte)(2 * m);
+                System.out.write(n);
+                System.out.write(n);
+                System.out.write(n);
             }
         }
+
+        System.out.flush();
     }
 }
