@@ -34,16 +34,16 @@ class Mandel {
         return y;
     }
 
-    public static byte mandelbrot(double[] c) {
+    public static int mandelbrot(double[] c) {
         int max = 100;
 
         double[] z = new double[2];
         z[0] = c[0];
         z[1] = c[1];
 
-        for(int i = 0; i < 255; ++i) {
+        for(int i = 0; i < 128; ++i) {
             if(cabs(z) > max)
-                return (byte)(255 - i);
+                return (128 - i);
 
             z = cadd(cpow2(z), c);
         }
@@ -90,12 +90,7 @@ class Mandel {
         for(int y = 0; y < height; ++y) {
             for(int x = 0; x < width; ++x) {
                 double[] c = transform(x, y, width, height);
-                byte n = mandelbrot(c);
-                n = x % 0x40;
-                if(y % 2 == 0)
-                    n = 0x40;
-                else
-                    n = 0x00;
+                byte n = (byte)mandelbrot(c);
                 byte[] pixel = {n, n, n};
                 System.out.print(new String(pixel));
             }
