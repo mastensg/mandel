@@ -62,8 +62,8 @@ mandelbrot(const float a, const float b) {
 
 int
 main(int argc, char *argv[]) {
-    uint16_t w = 1024;
-    uint16_t h = 768;
+    uint16_t w = 1280;
+    uint16_t h = 1024;
     uint8_t p[3 * w * h];
 
     for(int y = 0; y < h; ++y) {

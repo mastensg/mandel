@@ -1,5 +1,5 @@
-width = 1920
-height = 1200
+width = 1280
+height = 1024
 pixels = width * height
 bytes = 3 * pixels
 
