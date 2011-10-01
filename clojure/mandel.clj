@@ -1,55 +1,54 @@
+(defn putchar [c]
+      (-> (System/out) (.write (int c))))
+
 (defn mandelbrot [ca cb]
-    (def za ca)
-    (def zb cb)
-    (def zaa 0)
-    (def zbb 0)
+      (def za ca)
+      (def zb cb)
+      (def zaa (* za za))
+      (def zbb (* zb zb))
 
-    (def i 127)
-    (def j i)
-    (while (> i 0)
-        (def zaa (* za za))
-        (def zbb (* zb zb))
+      (def i 127)
+      (while (and (< (+ zaa zbb) 4) (> i 0))
+             (def zb (+ (* 2 za zb) cb))
+             (def za (+ (- zaa zbb) ca))
 
-        (if (< (+ zaa zbb) 4)
-            (def j (- j 1)))
+             (def zaa (* za za))
+             (def zbb (* zb zb))
 
-        (def zb (+ (* 2 za zb) zb))
-        (def za (+ (- zaa zbb) ca))
+             (def i (dec i)))
+      i)
 
-        (def i (- i 1)))
+(def w 1920)
+(def h 1200)
 
-    j)
+(putchar 0) ; id length
+(putchar 0) ; color map type
+(putchar 2) ; image type
+(putchar 0) ; first entry index
+(putchar 0)
+(putchar 0) ; color map length
+(putchar 0)
+(putchar 0) ; color map entry size
+(putchar 0) ; x origin
+(putchar 0)
+(putchar (mod h 256)) ; y origin
+(putchar (/ h 256))
+(putchar (mod w 256)) ; width
+(putchar (/ w 256))
+(putchar (mod h 256)) ; height
+(putchar (/ h 256))
+(putchar 24) ; pixel depth
+(putchar 32) ; image descriptor
 
-(def w 1024)
-(def h 768)
-
-(def w 256)
-(def h 256)
-
-(print (char 0))
-(print (char 0))
-(print (char 2))
-(print (char 0))
-(print (char 0))
-(print (char 0))
-(print (char 0))
-(print (char 0))
-(print (char 0))
-(print (char 0))
-(print (char (mod h 256)))
-(print (char (/ h 256)))
-(print (char (mod w 256)))
-(print (char (/ w 256)))
-(print (char (mod h 256)))
-(print (char (/ h 256)))
-(print (char 24))
-(print (char 32))
-
-(doseq [y (range 0 h)]
-    (let [b (- 1 (* 2 (/ y (float h))))]
-        (doseq [x (range 0 w)]
-            (let [a (+ -2.5 (* 3.5 (/ x (float w))))]
-                (let [v (mandelbrot a b)]
-                    (print (char v))
-                    (print (char v))
-                    (print (char v)))))))
+(loop [y 0]
+      (let [b (float (- 2 (* 4 (/ (float y) h))))]
+        (loop [x 0]
+              (let [a (float (+ -2 (- (/ w h)) (* 4 (/ (float x) w) (/ w h))))]
+                (let [v (* 2 (mandelbrot a b))]
+                  (putchar v)
+                  (putchar v)
+                  (putchar v)))
+              (if (< x (dec w))
+                (recur (inc x)))))
+      (if (< y (dec h))
+        (recur (inc y))))

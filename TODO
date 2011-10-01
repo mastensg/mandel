@@ -9,6 +9,7 @@ Java
 Io*
 Perl
 Awk
+Lisp (Clojure)
 
 TODO:
 Ada
@@ -23,7 +24,6 @@ Euler
 Fortran
 Fortress
 Limbo
-Lisp
 Logo
 Modula
 Pascal
