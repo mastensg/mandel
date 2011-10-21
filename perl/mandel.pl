@@ -34,7 +34,6 @@ for($y = 0; $y < $h; ++$y) {
         $za = $ca;
         $zb = $cb;
 
-        my $i = 0;
         for($i = 127; $i > 0; --$i) {
             if($za * $za / $pf + $zb * $zb / $pf > 4 * $pf) {
                 last;
@@ -53,5 +52,6 @@ for($y = 0; $y < $h; ++$y) {
 
         $a += $a_pitch;
     }
+
     $b += $b_pitch;
 }
