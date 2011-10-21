@@ -1,6 +1,6 @@
 .section .rodata
-    .set width, 1920
-    .set height, 1200
+    .set width, 1280
+    .set height, 1024
 
 header:
     .byte 0 /* id_length */
