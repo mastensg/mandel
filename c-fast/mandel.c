@@ -25,6 +25,11 @@ struct tga_header {
 
 #pragma pack(pop)
 
+static const int w = 1024;
+static const int h = 768;
+static const float a_stride = 3.5 / w;
+static const float b_stride = -2. / h;
+
 static void
 tga_write(FILE *file, const uint8_t *pixels, const uint16_t width, const uint16_t height) {
     struct tga_header h;
@@ -45,21 +50,18 @@ tga_write(FILE *file, const uint8_t *pixels, const uint16_t width, const uint16_
 
 static uint8_t
 mandelbrot(const float a, const float b) {
-    //float complex c = a + b * I;
-    //float complex z = c;
-    int ca = a * 1000;
-    int cb = b * 1000;
+    static const int pf = 1024;
+    int ca = a * pf;
+    int cb = b * pf;
     int za = ca;
     int zb = cb;
 
     for(uint8_t i = 127; i < 128; --i) {
-        //if(cabs(z) > 2)
-        if(za * za / 1000 + zb * zb / 1000 > 4000)
+        if(za * za / pf + zb * zb / pf > 4 * pf)
             return i;
 
-        //z = z * z + c;
-        int na = za * za / 1000 - zb * zb / 1000;
-        zb = 2 * za * zb / 1000 + cb;
+        int na = za * za / pf - zb * zb / pf;
+        zb = 2 * za * zb / pf + cb;
         za = na + ca;
     }
 
@@ -68,28 +70,26 @@ mandelbrot(const float a, const float b) {
 
 int
 main(int argc, char *argv[]) {
-    uint16_t w = 1280;
-    uint16_t h = 1024;
     uint8_t p[3 * w * h];
 
+    float b = 1;
+
     for(int y = 0; y < h; ++y) {
-        float b = 1 - 2. * y / h;
+        float a = -2.5;
 
         for(int x = 0; x < w; ++x) {
-            float a = -2.5 + 3.5 * x / w;
-
             uint8_t v = 2 * mandelbrot(a, b);
-
-            uint8_t r = v;
-            uint8_t g = v;
-            uint8_t b = v;
 
             int i = 3 * (y * w + x);
 
-            p[i + 0] = r;
-            p[i + 1] = g;
-            p[i + 2] = b;
+            p[i + 0] = v;
+            p[i + 1] = v;
+            p[i + 2] = v;
+
+            a += a_stride;
         }
+
+        b += b_stride;
     }
 
     tga_write(stdout, p, w, h);
