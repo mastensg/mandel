@@ -1,0 +1,18 @@
+ClrDraw
+Xmin→X
+While X≤Xmax
+Ymin→Y
+While Y≤Ymax
+X+Yi→C
+C→Z
+0→I
+While I<16 and abs(Z)<2
+Z²+C→Z
+I+1→I
+End
+If I=16
+Pt-On(X, Y)
+Y+Yscl→Y
+End
+X+Xscl→X
+End
