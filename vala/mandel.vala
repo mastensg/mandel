@@ -3,24 +3,24 @@ class Demo.HelloWorld : GLib.Object {
         var w = 1920;
         var h = 1200;
 
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 2);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", 0);
-        stdout.printf("%c", h % 256);
-        stdout.printf("%c", h / 256);
-        stdout.printf("%c", w % 256);
-        stdout.printf("%c", w / 256);
-        stdout.printf("%c", h % 256);
-        stdout.printf("%c", h / 256);
-        stdout.printf("%c", 24);
-        stdout.printf("%c", 32);
+        stdout.putc((char)0);
+        stdout.putc((char)0);
+        stdout.putc((char)2);
+        stdout.putc((char)0);
+        stdout.putc((char)0);
+        stdout.putc((char)0);
+        stdout.putc((char)0);
+        stdout.putc((char)0);
+        stdout.putc((char)0);
+        stdout.putc((char)0);
+        stdout.putc((char)(h % 256));
+        stdout.putc((char)(h / 256));
+        stdout.putc((char)(w % 256));
+        stdout.putc((char)(w / 256));
+        stdout.putc((char)(h % 256));
+        stdout.putc((char)(h / 256));
+        stdout.putc((char)24);
+        stdout.putc((char)32);
 
         for(var y = 0; y < h; ++y) {
             var b = 2.0 - 4.0 * y / h;
@@ -43,9 +43,11 @@ class Demo.HelloWorld : GLib.Object {
                     za = zaa - zbb + a;
                 }
 
-                stdout.printf("%c", 2 * i);
-                stdout.printf("%c", 2 * i);
-                stdout.printf("%c", 2 * i);
+                i = 256 - 2 * i;
+
+                stdout.putc((char)i);
+                stdout.putc((char)i);
+                stdout.putc((char)i);
             }
         }
         return 0;
