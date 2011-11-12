@@ -1,9 +1,9 @@
 width = 1024
-height = 768
-a_pitch = 3584 / width
-b_pitch = -2048 / height
-a_start = -2560
-b_start = 1024
+height = 1024
+a_pitch = 4
+b_pitch = -4
+a_start = -2048
+b_start = 2048
 pixels = width * height
 bytes = 3 * pixels
 
@@ -29,8 +29,6 @@ _start:
     xor r9, r9
     mov r11, b_start
 
-    mov rdi, 2
-
     lline:
         xor r8, r8
         mov r10, a_start
@@ -43,13 +41,13 @@ _start:
 
             lm:
                 mov rax, r12
-                mul r12
-                sar rax, 10
+                mul eax
+                sar eax, 10
                 mov r14, rax
 
                 mov rax, r13
-                mul r13
-                sar rax, 10
+                mul eax
+                sar eax, 10
                 mov r15, rax
 
                 add rax, r14
@@ -58,8 +56,7 @@ _start:
 
                 mov rax, r13
                 mul r12
-                add rax, rax
-                sar rax, 10
+                sar rax, 9
                 add rax, r11
                 mov r13, rax
 
@@ -75,11 +72,9 @@ _start:
             shl rax, 2
 
             mov byte [rbx], al
-            inc rbx
-            mov byte [rbx], al
-            inc rbx
-            mov byte [rbx], al
-            inc rbx
+            mov byte [rbx + 1], al
+            mov byte [rbx + 2], al
+            add rbx, 3
 
             add r10, a_pitch
 
@@ -98,7 +93,6 @@ _start:
     mov rax, sys_write
     syscall
 
-    ; exit
     xor rdi, rdi
     mov rax, sys_exit
     syscall
