@@ -1,4 +1,4 @@
-CFLAGS  = -Wall -pedantic -std=c99 -O3 -march=native -mtune=native
+CFLAGS  = -Wall -pedantic -std=c99 -O3
 LDFLAGS = -lm
 BINARY  = mandel
 VERSION = 0.1
