@@ -100,7 +100,6 @@ line:
         shladd out0 = line_x, 2, out2
         shladd out1 = line_y, 2, out2
         br.call.sptk rp = mandelbrot
-
         st1 [b] = ret0
         add b = 1, b
         ;;
