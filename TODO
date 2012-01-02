@@ -21,6 +21,7 @@ Forth*
 Assembler (SPARC64)
 Assembler (IA64)
 Erlang*
+Scheme (R5RS)
 
 TODO:
 Ada
@@ -40,7 +41,6 @@ Modula
 Pascal
 Postscript
 Prolog
-Scheme
 Sed
 Simula
 Smalltalk
