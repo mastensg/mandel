@@ -20,7 +20,7 @@ main(_) ->
     Height = 1024,
 
     As = [-2 + 4 * X / Width || X <- lists:seq(0, Width - 1)],
-    Bs = [2 - 4 * Y / Width || Y <- lists:seq(0, Height - 1)],
+    Bs = [2 - 4 * Y / Height || Y <- lists:seq(0, Height - 1)],
 
     Zs = [{A, B} || B <- Bs, A <- As],
 
