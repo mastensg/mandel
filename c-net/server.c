@@ -17,7 +17,6 @@ mandelbrot(double ca, double cb, int maxiter) {
 
     int i;
     for(i = 0; i < maxiter; ++i) {
-        puts("y");
         double zaa = za * za;
         double zbb = zb * zb;
 
@@ -35,11 +34,8 @@ static void
 mandelline(uint8_t *buf, size_t buflen, double b, double mina, double maxa, int maxiter) {
     double da = (maxa - mina) / buflen;
 
-    for(int x = 0; x < buflen; ++x) {
-        puts("x");
-        double a = mina + x * da;
-        buf[x] = mandelbrot(a, b, maxiter);
-    }
+    for(int x = 0; x < buflen; ++x)
+        buf[x] = mandelbrot(mina + x * da, b, maxiter);
 }
 
 int
@@ -65,11 +61,11 @@ main(int argc, char *argv[]) {
 
         int clientfd = accept(listenfd, (struct sockaddr *)&addr , &addrlen);
 
-        puts("hello");
+        puts("hei");
 
         int talking = 1;
         while(talking) {
-            uint8_t buf[1024];
+            uint8_t buf[1920];
             int numbytes;
 
             if((numbytes = read(clientfd, buf, sizeof(buf))) == 0)
@@ -77,7 +73,6 @@ main(int argc, char *argv[]) {
 
             buf[numbytes] = '\0';
 
-            puts("hmm...");
             double b, mina, maxa;
             if(sscanf((char *)buf, "%lf %lf %lf\n", &b, &mina, &maxa) != 3)
                 continue;
@@ -86,7 +81,7 @@ main(int argc, char *argv[]) {
             write(clientfd, buf, sizeof(buf));
         }
 
-        puts("goodbye");
+        puts("ha det\n");
 
         close(clientfd);
     }
