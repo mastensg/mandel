@@ -1,5 +1,8 @@
 #!/usr/bin/env lua
 
+local bit = require("bit")
+local lshift = bit.lshift
+
 local width = 1024
 local height = 1024
 local header = string.char(
@@ -23,19 +26,20 @@ height / 256,
 32 -- image descriptor
 )
 
-function mandelbrot(ca, cb)
+local function mandelbrot(ca, cb)
+    local arshift = bit.arshift
     local za = ca
     local zb = cb
 
     for i = 1, 128 do
-        local zaa = za * za / 1024
-        local zbb = zb * zb / 1024
+        local zaa = arshift(za * za, 10)
+        local zbb = arshift(zb * zb, 10)
 
-        if zaa + zaa > 4 * 1024 then
+        if zaa + zaa > 4096 then
             return i
         end
 
-        zb = ((za * zb) / 512) + cb
+        zb = arshift(za * zb, 9) + cb
         za = zaa - zbb + ca
     end
 
@@ -45,10 +49,10 @@ end
 io.write(header)
 
 for y = 1, height do
-    local b = 2 * 1024 - y * 4
+    local b = 2048 - lshift(y, 2)
 
     for x = 1, width do
-        local a = -2 * 1024 + x * 4
+        local a = -2048 + lshift(x, 2)
         local v = 256 - 2 * mandelbrot(a, b)
 
         io.write(string.char(v, v, v))
