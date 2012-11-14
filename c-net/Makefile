@@ -1,6 +1,7 @@
 CFLAGS  = -Wall -pedantic -std=c99 -O3
+LDFLAGS = -lm -lGL -lGLU -lglut
 
-all: server
+all: client server
 
 clean:
-	rm -f server
+	rm -f client server
