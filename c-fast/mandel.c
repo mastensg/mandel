@@ -26,7 +26,7 @@ static const uint8_t header[] = {
     32, // uint8_t image_descriptor;
 };
 
-uint8_t
+static int
 mandelbrot(int ca, int cb) {
     int za = ca;
     int zb = cb;
@@ -50,23 +50,23 @@ int
 main(int argc, char *argv[]) {
     write(1, header, sizeof(header));
 
+    uint8_t p[3 * w * h];
+    uint8_t *q = p;
     for(int y = 0; y < h; ++y) {
-        uint8_t p[3 * w];
-        uint8_t *q = p;
+        int b = (2 << 10) - (y << 2);
 
         for(int x = 0; x < w; ++x) {
-            int b = (2 << 10) - (y << 2);
             int a = -(2 << 10) + (x << 2);
 
-            int v = 256 - 2 * mandelbrot(a, b);
+            int v = - 2 * mandelbrot(a, b);
 
-            *(q++) = v;
-            *(q++) = v;
-            *(q++) = v;
+            *q++ = v * 2;
+            *q++ = v * 2;
+            *q++ = v;
         }
-
-        write(1, p, sizeof(p));
     }
+
+    write(1, p, sizeof(p));
 
     return EXIT_SUCCESS;
 }
