@@ -1,6 +1,6 @@
 #!/usr/bin/env lua
 
-local width = 1280
+local width = 1024
 local height = 1024
 local header = string.char(
 0, -- id length
@@ -23,65 +23,34 @@ height / 256,
 32 -- image descriptor
 )
 
-function cabs(z)
-    local a = z[1]
-    local b = z[2]
+function mandelbrot(ca, cb)
+    local za = ca
+    local zb = cb
 
-    return math.sqrt(a * a + b * b)
-end
+    for i = 1, 128 do
+        local zaa = za * za / 1024
+        local zbb = zb * zb / 1024
 
-function cpow2(z)
-    local a = z[1]
-    local b = z[2]
-
-    return {a * a - b * b, 2 * a * b}
-end
-
-function cadd(z, x)
-    local a = z[1]
-    local b = z[2]
-
-    local c = x[1]
-    local d = x[2]
-
-    return {a + c, b + d}
-end
-
-function mandelbrot(c)
-    local max = 100
-
-    local z = c
-
-    for i = 0, 255 do
-        if cabs(z) > max then
-            return 255 - i
+        if zaa + zaa > 4 * 1024 then
+            return i
         end
 
-        z = cadd(cpow2(z), c)
+        zb = ((za * zb) / 512) + cb
+        za = zaa - zbb + ca
     end
 
-    return 0
-end
-
-function transform(x, y)
-    local a = -2.5 + 3.5 * x / width
-    local b = 1 - 2. * y / height
-
-    return {a, b}
-end
-
-function write_pixel(n)
-    local s = string.char(n, n, n)
-    io.write(s)
+    return 128
 end
 
 io.write(header)
 
 for y = 1, height do
+    local b = 2 * 1024 - y * 4
+
     for x = 1, width do
-        local c = transform(x, y)
-        local n = mandelbrot(c)
-        write_pixel(n)
+        local a = -2 * 1024 + x * 4
+        local v = 256 - 2 * mandelbrot(a, b)
+
+        io.write(string.char(v, v, v))
     end
 end
-
