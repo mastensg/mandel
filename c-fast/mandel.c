@@ -36,7 +36,7 @@ mandelbrot(int ca, int cb) {
         int zaa = za * za >> 10;
         int zbb = zb * zb >> 10;
 
-        if(zaa + zaa > 4 << 10)
+        if(zaa + zbb > 4 << 10)
             return i;
 
         zb = ((za * zb) >> 9) + cb;

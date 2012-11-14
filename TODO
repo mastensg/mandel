@@ -22,6 +22,7 @@ Assembler (SPARC64)
 Assembler (IA64)
 Erlang*
 Scheme (R5RS)
+Assembler (ARM)
 
 TODO:
 Ada
