@@ -32,7 +32,7 @@ mandelbrot(int ca, int cb) {
     int zb = cb;
 
     int i;
-    for(i = 0; i < 128; ++i) {
+    for(i = 0; i < 127; ++i) {
         int zaa = za * za >> 10;
         int zbb = zb * zb >> 10;
 
@@ -58,10 +58,10 @@ main(int argc, char *argv[]) {
         for(int x = 0; x < w; ++x) {
             int a = -(2 << 10) + (x << 2);
 
-            int v = - 2 * mandelbrot(a, b);
+            int v = 255 - 2 * mandelbrot(a, b);
 
-            *q++ = v * 2;
-            *q++ = v * 2;
+            *q++ = v;
+            *q++ = v;
             *q++ = v;
         }
     }
