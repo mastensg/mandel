@@ -1,26 +1,28 @@
 -module(mandel).
--export([mandelbrot/1, main/1]).
-
-cadd({Ar, Ai}, {Br, Bi}) ->
-    {Ar + Br, Ai + Bi}.
-
-cpow2({Re, Im}) ->
-    {Re * Re - Im * Im, 2 * Re * Im}.
+-export([mandelbrot/1, main/0]).
 
 mandelbrot(Z) ->
     mandelbrot(0, Z, Z).
 
-mandelbrot(I, {Re, Im}, _) when I >= 127 orelse Re * Re + Im * Im >= 4 ->
+mandelbrot(I, _, _) when I >= 120 ->
     I;
-mandelbrot(I, Z, C) ->
-    mandelbrot(I + 1, cadd(cpow2(Z), C), C).
+mandelbrot(I, {Za, Zb}, {Ca, Cb}) ->
+    Zaa = Za * Za bsr 10,
+    Zbb = Zb * Zb bsr 10,
 
-main(_) ->
+    if
+        Zaa + Zbb > 4096 ->
+            I;
+        true ->
+            mandelbrot(I + 1, {Zaa - Zbb + Ca, (Za * Zb bsr 9) + Cb}, {Ca, Cb})
+    end.
+
+main() ->
     Width = 1024,
     Height = 1024,
 
-    As = [-2 + 4 * X / Width || X <- lists:seq(0, Width - 1)],
-    Bs = [2 - 4 * Y / Height || Y <- lists:seq(0, Height - 1)],
+    As = [-2048 + (X bsl 2) || X <- lists:seq(0, Width - 1)],
+    Bs = [2048 - (Y bsl 2) || Y <- lists:seq(0, Height - 1)],
 
     Zs = [{A, B} || B <- Bs, A <- As],
 
@@ -43,4 +45,6 @@ main(_) ->
 
     Pixels = << <<I:8, I:8, I:8>> || I <- Iterations >>,
 
-    io:format(<<Header/binary, Pixels/binary>>).
+    io:format(<<Header/binary, Pixels/binary>>),
+
+    init:stop().
