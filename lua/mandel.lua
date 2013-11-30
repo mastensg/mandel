@@ -35,7 +35,7 @@ local function mandelbrot(ca, cb)
         local zaa = arshift(za * za, 10)
         local zbb = arshift(zb * zb, 10)
 
-        if zaa + zaa > 4096 then
+        if zaa + zbb > 4096 then
             return i
         end
 
