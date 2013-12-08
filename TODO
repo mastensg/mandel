@@ -26,9 +26,10 @@ Assembler (ARM)
 Haskell*
 Julia*
 Caml (OCaml)
-Yorick
-D
-Tcl
+Yorick*
+D*
+Tcl*
+Pike*
 
 TODO:
 Ada
