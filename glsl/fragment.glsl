@@ -10,11 +10,11 @@ main(void)
     int i;
     vec2 c, z, zz;
 
-    c = zoom * 2.0 * (coord + center);
+    c = center + zoom * coord;
 
     z = c;
 
-    for (i = 0; i < 127; ++i)
+    for (i = 0; i < 60; ++i)
     {
         zz = z * z;
 
@@ -25,10 +25,13 @@ main(void)
         z.x = zz.x - zz.y + c.x;
     }
 
-    //p = 1.0 - 1.0 / float(i);
+#if 0
+    p = 1.0 - (1.0 / 256.0) * float(i);
+#else
     p = zz.x + zz.y;
     p = 1.0 / p;
     p = 1.0 - p;
+#endif
 
     gl_FragColor = vec4(p, p, p, 1.0);
 }

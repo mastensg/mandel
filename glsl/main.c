@@ -27,15 +27,11 @@ static GLint position_attrib;
 
 /*********************************************/
 
-static const GLfloat
-quad_vertices[] =
-{
+static const GLfloat quad_vertices[] = {
     -1, -1, 1, -1, 1, 1, -1, 1,
 };
 
-static const GLubyte
-quad_indices[] =
-{
+static const GLubyte quad_indices[] = {
     0, 1, 2, 2, 3, 0,
 };
 
@@ -50,8 +46,8 @@ error_callback(int error, const char *description)
 static void
 cursor_position_callback(GLFWwindow *window, double x, double y)
 {
-    mx = 2.0 * x / sw - 1.0;
-    my = 1.0 - 2.0 * y / sh;
+    mx = x / sw;
+    my = 1.0 - y / sh;
 }
 
 static void
@@ -144,7 +140,8 @@ gl_init()
 
     glGenBuffers(1, &index_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quad_indices), quad_indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quad_indices), quad_indices,
+                 GL_STATIC_DRAW);
 }
 
 /*********************************************/
@@ -152,11 +149,14 @@ gl_init()
 int
 main()
 {
-    double centerx, centery, zoom;
+    double r, x0, x1, y0, y1;
 
-    centerx = 0.0;
-    centery = 0.0;
-    zoom = 1.0;
+    r = 2.0;
+
+    x0 = -r;
+    x1 = r;
+    y0 = -r;
+    y1 = r;
 
     glfw_init();
 
@@ -168,31 +168,37 @@ main()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer);
     glVertexAttribPointer(position_attrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-    glUniform2f(center_uniform, centerx, centery);
-    glUniform1f(zoom_uniform, zoom);
-
     while (!glfwWindowShouldClose(window))
     {
+        int m;
+        double centerx, centery, zoom;
+
+        m = m2 - m1;
+
+        if (m)
         {
-            int m;
+            double f, x, y, z;
 
-            m = m2 - m1;
+            x = x0 + mx * (x1 - x0);
+            y = y0 + my * (y1 - y0);
 
-            if (m)
-            {
-                centerx = mx;
-                centery = my;
+            f = 1.01;
+            z = 0 < m ? f : 1.0 / f;
 
-                glUniform2f(center_uniform, centerx, centery);
+            x0 = x + z * (x0 - x);
+            x1 = x + z * (x1 - x);
 
-                if (0 < m)
-                    zoom *= 1.01;
-                else if (m < 0)
-                    zoom /= 1.01;
-
-                glUniform1f(zoom_uniform, zoom);
-            }
+            y0 = y + z * (y0 - y);
+            y1 = y + z * (y1 - y);
         }
+
+        centerx = 0.5 * (x0 + x1);
+        centery = 0.5 * (y0 + y1);
+
+        zoom = 0.5 * (x1 - x0);
+
+        glUniform2f(center_uniform, centerx, centery);
+        glUniform1f(zoom_uniform, zoom);
 
         glDrawElements(GL_TRIANGLES, LENGTH(quad_indices), GL_UNSIGNED_BYTE, 0);
         glfwSwapBuffers(window);
