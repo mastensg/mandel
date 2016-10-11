@@ -1,11 +1,10 @@
 CFLAGS  = -Wall -pedantic -std=c99 -O3 -march=native -mtune=native
-LDFLAGS = -lm
-BINARY  = mandel
-VERSION = 0.1
-PREFIX  = /usr/local
-OBJECTS = $(BINARY).o
+LDADD = -lm
 
-all: $(BINARY)
+all: mandel
+
+mandel: mandel.c
+	$(CC) $(CFLAGS) -o $@ $< $(LDADD)
 
 clean:
 	rm -f $(BINARY).o $(BINARY)
