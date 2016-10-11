@@ -1,0 +1,11 @@
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+script:
+  - cd c
+  - make
+  - time ./mandel >out.tga
+  - sha256sum out.tga
