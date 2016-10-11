@@ -8,4 +8,4 @@ script:
   - cd c
   - make
   - time ./mandel >out.tga
-  - sha256sum out.tga
+  - sha256sum --check out.sha256
