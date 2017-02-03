@@ -1,5 +1,6 @@
 uniform vec2 center;
 uniform float zoom;
+uniform int iters;
 
 varying vec2 coord;
 
@@ -14,7 +15,7 @@ main(void)
 
     z = c;
 
-    for (i = 0; i < 60; ++i)
+    for (i = 0; i < iters; ++i)
     {
         zz = z * z;
 
