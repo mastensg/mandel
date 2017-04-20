@@ -45,7 +45,7 @@ tga_write(FILE *file, const uint8_t *pixels, const uint16_t width, const uint16_
 
 static uint8_t
 mandelbrot(const float a, const float b) {
-    static const float max = 100;
+    static const float max = 200;
 
     float complex c = a + b * I;
     float complex z = c;
