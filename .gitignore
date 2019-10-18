@@ -1,5 +1,6 @@
-*.class
-*.tga
-*.beam
 *.6
+*.beam
+*.class
+*.swp
+*.tga
 mandel
